@@ -6,15 +6,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.johnew.game.FlappyTest;
 import com.johnew.game.sprites.Cat;
 
+import java.util.ArrayList;
+
 public class PlayState extends State {
-    private Cat cat;
-    private Cat cat2;
     private Texture bg;
+
+    private ArrayList<Cat> sprites;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
-        cat = new Cat(50, 200);
-        cat2 = new Cat(100, 600);
+
+        sprites = new ArrayList<Cat>();
+        sprites.add(new Cat(50, 600, "heli"));
+        sprites.add(new Cat(100, 30, "heli"));
+        sprites.add(new Cat(100, 300, "heli"));
+        sprites.add(new Cat(10, 400, "pepe2.png"));
+
         bg = new Texture("crying.jpg");
     }
 
@@ -28,60 +35,68 @@ public class PlayState extends State {
     public void update(float dt) {
         handleInput();
 
-        if (cat.getPosition().y > FlappyTest.HEIGHT - cat.getCat().getHeight() || cat.getPosition().y < 0) {
-            cat.setY_direction(cat.getY_direction() * -1);
+        for (Cat c: sprites) {
+            c.handleWallCollision();
         }
-        if (cat.getPosition().x > (FlappyTest.WIDTH - cat.getCat().getWidth()) || cat.getPosition().x < 0) {
-            cat.setX_direction(cat.getX_direction() * -1);
-        }
+        ArrayList<Cat> temp = new ArrayList<Cat>(sprites);
+        temp.remove(0);
 
-        if (cat2.getPosition().y > FlappyTest.HEIGHT - cat2.getCat().getHeight() || cat2.getPosition().y < 0) {
-            cat2.setY_direction(cat2.getY_direction() * -1);
-        }
-        if (cat2.getPosition().x > (FlappyTest.WIDTH - cat2.getCat().getWidth()) || cat2.getPosition().x < 0) {
-            cat2.setX_direction(cat2.getX_direction() * -1);
-        }
-
-        if (cat.collides(cat2)) {
-            cat.setY_direction(cat.getY_direction() * -1);
-            cat2.setY_direction(cat2.getY_direction() * -1);
-
-            cat.setX_direction(cat.getX_direction() * -1);
-            cat2.setX_direction(cat2.getX_direction() * -1);
+        for (Cat a: sprites) {
+            for (Cat b: temp) {
+                if (a.collides(b)) {
+                    a.copterCollision();
+                    b.copterCollision();
+                }
+            }
+            if (!(temp.isEmpty())) {
+                temp.remove(0);
+            }
         }
 
 
-        cat.update(dt);
-        cat2.update(dt);
+        /*if (cat.collides(cat2)) {
+            cat.copterCollision();
+            cat2.copterCollision();
+        } */
+
+        for (Cat c: sprites) {
+            c.update(dt);
+        }
     }
 
     @Override
     public void render(SpriteBatch sb) {
         sb.begin();
-        //sb.draw(cat.getCat(), cat.getPosition().x, cat.getPosition().y);
-
-        Sprite sprite = new Sprite(cat.getCat());
-        boolean flipped = (cat.getX_direction() == 1) ? true : false;
-        sprite.flip(flipped, false);
-
-        Sprite sprite2 = new Sprite(cat2.getCat());
-        boolean flipped2 = (cat2.getX_direction() == 1) ? true : false;
-        sprite2.flip(flipped2, false);
-
         sb.draw(bg,0, 0, FlappyTest.WIDTH, FlappyTest.HEIGHT);
 
-        sb.draw(sprite, cat.getPosition().x, cat.getPosition().y);
-        sb.draw(sprite2, cat2.getPosition().x, cat2.getPosition().y);
 
+        ArrayList<Sprite> sp = new ArrayList<Sprite>(); // make a new list with sprites instead of cats.
+        for (Cat c: sprites) {
+            sp.add(new Sprite(c.getCat()));
+        }
 
-        //sb.draw(, sprite.getPosition().x, flipped.getPosition().);
+        for (Sprite s: sp) {
+            Cat c = sprites.get(sp.indexOf(s));                     // get Cat object
+            s.flip((c.getX_direction() == 1), false);            // consider flipping sprite.
+            sb.draw(s, c.getPosition().x, c.getPosition().y);       // draw sprite.
+        }
+
         sb.end();
     }
 
     @Override
     public void dispose() {
         bg.dispose();
-        cat.dispose();
+        for (Cat c: sprites) {
+            c.dispose();
+        }
+
+    }
+
+    public Sprite flipAndConvertTexture(Texture t) {
+        Sprite sprite = new Sprite(t);
+        sprite.flip(true, false);
+        return sprite;
     }
 }
 

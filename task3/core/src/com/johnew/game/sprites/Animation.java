@@ -14,11 +14,16 @@ public class Animation {
     private int frameCount;
     private int frame;
 
-    public Animation(int frameCount, float cycleTime) {
+    public Animation(int frameCount, float cycleTime, String texture) {
         frames = new Array<Texture>();
 
-        for(int i = 0; i < 4; i++) {
-            frames.add(new Texture("heli" + Integer.toString(i+1) + ".png"));
+        if (texture.equals("heli")) {
+            for (int i = 0; i < 4; i++) {
+                frames.add(new Texture(texture + Integer.toString(i + 1) + ".png"));
+            }
+        } else {
+            frames.add(new Texture(texture));
+            frameCount = 1;
         }
         this.frameCount = frameCount;
         maxFrameTime = cycleTime / frameCount;
