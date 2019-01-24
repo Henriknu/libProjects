@@ -31,7 +31,7 @@ public class Helicopter {
     public void update(float dt){
         velocity.scl(dt);
         if (position.x < Exercise1.WIDTH + helicopter.getWidth()/2 && position.x > 0 + helicopter.getWidth()*3/2
-                && position.y < Exercise1.HEIGHT + helicopter.getHeight()*7/2 && position.y > 0 + helicopter.getHeight()*9/2) {
+                && position.y < Exercise1.HEIGHT + helicopter.getHeight()*7/2 && position.y > 0 + helicopter.getHeight()*6) {
             position.add(MOVEMENT_X * dt * this.translateDir(this.direction_x), MOVEMENT_Y * dt * this.translateDir(this.direction_y), 0);
             this.faulty_x = false;
             this.faulty_y = false;

@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.sprites.Helicopter;
-import com.mygdx.game.Exercise1;
 
 
 public class PlayState extends State implements InputProcessor {
@@ -46,11 +45,10 @@ public class PlayState extends State implements InputProcessor {
         sb.begin();
         sb.draw(bg,0, 0, Exercise1.WIDTH,Exercise1.HEIGHT);
         sb.draw(helicopter.getSprite(), cam.position.x - cam.viewportWidth/2, cam.position.y - cam.viewportHeight/2);
-
         BitmapFont f = new BitmapFont();
         f.setColor(Color.WHITE);
         f.getData().setScale(1.5f);
-        String str = "X: " + Math.round(helicopter.getPosition().x) + ", Y: " +  Math.round(helicopter.getPosition().y);
+        String str = "X: " + Math.round(helicopter.getPosition().x) + ", Y: " +  Math.round(helicopter.getPosition().y-200);
         f.draw(sb, str, 10, Exercise1.HEIGHT - 10);
         sb.end();
     }

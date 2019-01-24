@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Exercise1 extends ApplicationAdapter {
 	public static final int WIDTH = 480;
-	public static final int HEIGHT = 600;
+	public static final int HEIGHT = 800;
 	SpriteBatch batch;
 	private GameStateManager gsm;
 	Texture img;
