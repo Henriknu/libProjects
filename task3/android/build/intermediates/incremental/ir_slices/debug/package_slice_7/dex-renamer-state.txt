@@ -1,0 +1,4 @@
+#Thu Jan 24 11:32:52 CET 2019
+base.0=/home/johnew/ntnu/proark/ex1/libProjects/task3/android/build/intermediates/transforms/dexMerger/debug/7
+path.0=classes.dex
+renamed.0=classes.dex
